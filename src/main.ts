@@ -96,3 +96,19 @@ async function getAllActresses(): Promise<Actress[]> {
     return [];
   }
 }
+
+async function getActresses(ids: number[]): Promise<Actress[]> {
+  try{
+    const promises = ids.map(id => getAcrtess(id));
+    const actresses = await Promise.all(promises);
+    // Filter out any null results
+    return actresses.filter((actress): actress is Actress => actress !== null);
+  }catch (error) {
+    if(error instanceof Error) {
+      console.error("Error fetching actresses data:", error.message);
+    }else {
+      console.error("An unexpected error occurred:", error);
+    }
+    return [];
+  }
+}
