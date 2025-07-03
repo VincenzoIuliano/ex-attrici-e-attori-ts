@@ -72,3 +72,27 @@ async function getAcrtess(id: number): Promise<Actress | null> {
     return null;
   }
 }
+
+async function getAllActresses(): Promise<Actress[]> {
+  
+  try{
+    const response = await fetch("http://localhost:3333/actresses");
+    if(!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const dati = await response.json();
+    if (!Array.isArray(dati)) {
+      throw new Error("Invalid data format: Expected an array");
+    }
+    const actressessAdmitted = dati.filter(isActress)
+    return actressessAdmitted;
+   
+  }catch (error) {
+    if(error instanceof Error) {
+      console.error("Error fetching actressess data:", error.message);
+    }else {
+      console.error("An unexpected error occurred:", error);
+    }
+    return [];
+  }
+}
